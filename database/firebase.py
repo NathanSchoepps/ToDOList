@@ -1,20 +1,18 @@
-import firebase_admin
+import firebase_admin, pyrebase
 from firebase_admin import credentials
-import pyrebase
-from configs.firebase_config import firebaseConfig
-from dotenv import dotenv_values
+import json
+import os
+from dotenv import load_dotenv
 
-nfig = dotenv_values(".env")
+load_dotenv()
+env={
+  "FIREBASE_SERVICE_ACCOUNT_KEY": os.getenv("FIREBASE_SERVICE_ACCOUNT_KEY"),
+  "FIREBASE_CONFIG": os.getenv("FIREBASE_CONFIG")
+}
 
-if not firebase_admin._apps:
-    cred = credentials.Certificate(
-        "configs/todolist-9ea3d-firebase-adminsdk-g3yqt-73d47c2b5a.json"
-    )
-    firebase_admin.initialize_app(cred)
+cred = credentials.Certificate(json.loads(env['FIREBASE_SERVICE_ACCOUNT_KEY'], strict=False))
+firebase_admin.initialize_app(cred)
 
-firebase = pyrebase.initialize_app(firebaseConfig)
-db = firebase.database()
-
+firebase=pyrebase.initialize_app(json.loads(env['FIREBASE_CONFIG'], strict=False))
+db=firebase.database()
 authShop = firebase.auth()
-
-# cred = credentials.Certificate(json.load(config))
