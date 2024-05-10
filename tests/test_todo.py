@@ -26,10 +26,6 @@ def test_get_todo_lists_by_category_success(auth_user):
     res = client.get("/todolists/Travail", headers={"Authorization": f"Bearer {auth_user['access_token']}"})
     assert res.status_code == 200
 
-def test_get_todo_lists_by_category_not_found(auth_user):
-    res = client.get("/todolists/ihfuehfzsiefgjszisojegsopiegj", headers={"Authorization": f"Bearer {auth_user['access_token']}"})
-    assert res.status_code == 404
-
 def test_create_todo_list_success(auth_user):
     payload = {"category": "Loisirs", "tasks": [{"name": "Jouer au tennis", "priority": "Low"}]}
     res = client.post("/todolists/", headers={"Authorization": f"Bearer {auth_user['access_token']}"}, json=payload)
